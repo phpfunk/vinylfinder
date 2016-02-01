@@ -1,0 +1,6 @@
+config.php
+lib/vendor/
+composer.lock
+*.cache
+*.log
+test*

@@ -1,0 +1,11 @@
+{
+  "require": {
+    "sendgrid/sendgrid": "~4.0"
+  },
+  "config": {
+    "vendor-dir": "lib/vendor"
+  },
+  "autoload": {
+    "psr-4": {"VinylFinder\\": "lib/VinylFinder"}
+  }
+}
