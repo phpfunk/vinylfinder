@@ -46,6 +46,14 @@ class Discogs extends \VinylFinder\Base {
         $this->wants = array();
         $wants       = $this->search('users/' . $username . '/wants');
 
+        // If no wants, message and leave
+        if (!isset($wants->wants)) {
+            parent::printLog("  - Your wantlist wasn't found");
+            parent::printLog('  - Status Code: ' . $this->status);
+            parent::printLog('  - Error: ' . $this->error);
+            exit;
+        }
+
         $this->theFormat($wants);
 
         // get total pages
