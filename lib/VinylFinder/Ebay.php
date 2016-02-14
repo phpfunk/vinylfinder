@@ -4,7 +4,10 @@ namespace VinylFinder;
 class Ebay extends \VinylFinder\Base {
 
     private $appId;
+    private $wantList = array();
+
     public  $categoryId = '176985'; // Records
+    public  $message    = null;
 
     public function __construct($appId) {
       parent::__construct();
@@ -58,7 +61,9 @@ class Ebay extends \VinylFinder\Base {
           }
       }
 
-      return $wantList;
+      $this->wantList = $wantList;
+      $this->setEmail();
+      $this->sendEmail(EMAIL_SUBJECT);
     }
 
     private function search($query, $returnTotal = 50) {
@@ -150,6 +155,46 @@ class Ebay extends \VinylFinder\Base {
       } else {
           return false;
       }
+    }
+
+    private function setEmail() {
+
+      parent::printLog(' - Formatting email');
+
+      if (empty($this->wantList)) {
+          return;
+      }
+
+      // Loop thru the listings and get the email ready
+      foreach ($this->wantList as $info) {
+          $listings = isset($info['listings']) ? $info['listings'] : array();
+          $total    = count($listings);
+
+          if ($total > 0) {
+              $this->message .= '<img src="' . $info['thumb'] . '" style="display:inline;float:left;margin-right: 5px;margin-bottom:10px;margin-top:50px;" />';
+              $this->message .= '<h2 style="margin-top: 60px;"><a href="' . $info['discogs_url'] . '">' . $info['emailTitle'] . '</a> (' . $total . ')</h2>';
+              $this->message .= '<table style="width:100%;border: 1px solid black;border-collapse: collapse;"><tr>';
+              $this->message .= '<th style="border: 1px solid black;border-collapse: collapse;padding: 5px;text-align: left;">Title</th>';
+              $this->message .= '<th style="border: 1px solid black;border-collapse: collapse;padding: 5px;text-align: left;">Location</th>';
+              $this->message .= '<th style="border: 1px solid black;border-collapse: collapse;padding: 5px;text-align: left;">Condition</th>';
+              $this->message .= '<th style="border: 1px solid black;border-collapse: collapse;padding: 5px;text-align: left;">Price</th>';
+              $this->message .= '<th style="border: 1px solid black;border-collapse: collapse;padding: 5px;text-align: left;">Shipping</th>';
+              $this->message .= '<th style="border: 1px solid black;border-collapse: collapse;padding: 5px;text-align: left;">Total</th></tr>';
+              foreach ($listings as $listing) {
+                  $this->message .= '<tr>';
+                  $this->message .= '<td style="border: 1px solid black;border-collapse: collapse;padding: 5px;text-align: left;"><a href="' . $listing['url'] . '">';
+                  $this->message .= $listing['title'] . '</a></td>';
+                  $this->message .= '<td style="border: 1px solid black;border-collapse: collapse;padding: 5px;text-align: left;">' . $listing['location'] . '</td>';
+                  $this->message .= '<td style="border: 1px solid black;border-collapse: collapse;padding: 5px;text-align: left;">' . $listing['condition'] . '</td>';
+                  $this->message .= '<td style="border: 1px solid black;border-collapse: collapse;padding: 5px;text-align: left;">$' . $listing['price'] . '</td>';
+                  $this->message .= '<td style="border: 1px solid black;border-collapse: collapse;padding: 5px;text-align: left;">$' . $listing['shipping'] . '</td>';
+                  $this->message .= '<td style="border: 1px solid black;border-collapse: collapse;padding: 5px;text-align: left;">$' . $listing['totalPrice'] . '</td>';
+                  $this->message .= '</tr>';
+              }
+              $this->message .= '</table>';
+          }
+      }
+
     }
 
 }

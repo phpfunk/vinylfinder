@@ -41,38 +41,5 @@ if (DEBUG === true) {
 \VinylFinder\Base::printLog(' - Starting to search ebay for your wantlist');
 
 // Ebay it
-$ebay     = new \VinylFinder\Ebay(EBAY_APPID);
-$wantList = $ebay->getListings($wantList);
-
-// Parse final lists and send email
-\VinylFinder\Base::printLog(' - Parsing the ebay lists');
-$message = \VinylFinder\Base::getEmailMessage($wantList);
-
-// If there is a message to send, send it
-if (!empty($message)) {
-    \VinylFinder\Base::printLog(' - Sending email');
-
-    // Send email
-    $sendgrid = new SendGrid(SENDGRID_KEY);
-    $email    = new SendGrid\Email();
-    $email
-        ->addTo(TO_ADDRESS)
-        ->setFrom(FROM_ADDRESS)
-        ->setSubject(EMAIL_SUBJECT)
-        ->setHtml($message)
-    ;
-
-    try {
-        $sendgrid->send($email);
-        \VinylFinder\Base::printLog('  - Email sent');
-    } catch(\SendGrid\Exception $e) {
-        \VinylFinder\Base::printLog($e->getCode());
-        echo $e->getCode();
-        foreach($e->getErrors() as $er) {
-            \VinylFinder\Base::printLog($er);
-        }
-    }
-
-} else {
-    \VinylFinder\Base::printLog(' - No email to send');
-}
+$ebay = new \VinylFinder\Ebay(EBAY_APPID);
+$ebay->getListings($wantList);

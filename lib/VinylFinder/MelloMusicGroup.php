@@ -29,6 +29,7 @@ class MelloMusicGroup extends \VinylFinder\Base {
         $this->checkForChanges();
         $this->setCache($this->foundReleases, true);
         $this->setEmail();
+        $this->sendEmail(MMG_SUBJECT);
     }
 
     private function checkForChanges() {
@@ -148,6 +149,8 @@ class MelloMusicGroup extends \VinylFinder\Base {
     }
 
     private function setEmail() {
+
+        parent::printLog(' - Formatting email');
 
         if (empty($this->releases)) {
             return;

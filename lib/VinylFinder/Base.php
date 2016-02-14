@@ -55,6 +55,37 @@ class Base {
         }
     }
 
+    protected function sendEmail($subject) {
+
+        // If there is a message to send, send it
+        if (!empty($this->message)) {
+            self::printLog(' - Sending email');
+
+            // Send email
+            $sendgrid = new \SendGrid(SENDGRID_KEY);
+            $email    = new \SendGrid\Email();
+            $email
+                ->addTo(TO_ADDRESS)
+                ->setFrom(FROM_ADDRESS)
+                ->setSubject($subject)
+                ->setHtml($this->message)
+            ;
+
+            try {
+                $sendgrid->send($email);
+                self::printLog('  - Email sent');
+            } catch(\SendGrid\Exception $e) {
+                self::printLog($e->getCode());
+                foreach($e->getErrors() as $er) {
+                    self::printLog($er);
+                }
+            }
+
+        } else {
+            self::printLog(' - No email to send');
+        }
+    }
+
     public function setCache($value, $override = false) {
 
         if ($this->isCacheExpired() === false && $override === false) {
@@ -92,40 +123,4 @@ class Base {
         print $message . PHP_EOL;
     }
 
-    public static function getEmailMessage($wantList) {
-        // Set the base email style, stupid table shit
-        $message = null;
-
-        // Loop thru the listings and get the email ready
-        foreach ($wantList as $info) {
-            $listings = isset($info['listings']) ? $info['listings'] : array();
-            $total    = count($listings);
-
-            if ($total > 0) {
-                $message .= '<img src="' . $info['thumb'] . '" style="display:inline;float:left;margin-right: 5px;margin-bottom:10px;margin-top:50px;" />';
-                $message .= '<h2 style="margin-top: 60px;"><a href="' . $info['discogs_url'] . '">' . $info['emailTitle'] . '</a> (' . $total . ')</h2>';
-                $message .= '<table style="width:100%;border: 1px solid black;border-collapse: collapse;"><tr>';
-                $message .= '<th style="border: 1px solid black;border-collapse: collapse;padding: 5px;text-align: left;">Title</th>';
-                $message .= '<th style="border: 1px solid black;border-collapse: collapse;padding: 5px;text-align: left;">Location</th>';
-                $message .= '<th style="border: 1px solid black;border-collapse: collapse;padding: 5px;text-align: left;">Condition</th>';
-                $message .= '<th style="border: 1px solid black;border-collapse: collapse;padding: 5px;text-align: left;">Price</th>';
-                $message .= '<th style="border: 1px solid black;border-collapse: collapse;padding: 5px;text-align: left;">Shipping</th>';
-                $message .= '<th style="border: 1px solid black;border-collapse: collapse;padding: 5px;text-align: left;">Total</th></tr>';
-                foreach ($listings as $listing) {
-                    $message .= '<tr>';
-                    $message .= '<td style="border: 1px solid black;border-collapse: collapse;padding: 5px;text-align: left;"><a href="' . $listing['url'] . '">';
-                    $message .= $listing['title'] . '</a></td>';
-                    $message .= '<td style="border: 1px solid black;border-collapse: collapse;padding: 5px;text-align: left;">' . $listing['location'] . '</td>';
-                    $message .= '<td style="border: 1px solid black;border-collapse: collapse;padding: 5px;text-align: left;">' . $listing['condition'] . '</td>';
-                    $message .= '<td style="border: 1px solid black;border-collapse: collapse;padding: 5px;text-align: left;">$' . $listing['price'] . '</td>';
-                    $message .= '<td style="border: 1px solid black;border-collapse: collapse;padding: 5px;text-align: left;">$' . $listing['shipping'] . '</td>';
-                    $message .= '<td style="border: 1px solid black;border-collapse: collapse;padding: 5px;text-align: left;">$' . $listing['totalPrice'] . '</td>';
-                    $message .= '</tr>';
-                }
-                $message .= '</table>';
-            }
-        }
-
-        return $message;
-    }
 }
