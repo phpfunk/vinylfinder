@@ -14,7 +14,7 @@ class MelloMusicGroup extends \VinylFinder\Base {
             $html = $this->runTheJewels('http://www.mellomusicgroup.com/collections/vinyl?page=' . $page);
 
             // If no more releases, break out
-            if (stristr($html, 'No products found') !== false) {
+            if (stristr($html, 'no products in this collection') !== false) {
                 parent::printLog('   - No releases found on this page, exiting loop');
                 break;
             }
@@ -92,45 +92,35 @@ class MelloMusicGroup extends \VinylFinder\Base {
     private function findReleases($html) {
 
         /*
-        <div class="masonry-item product span3">
-            <div class="image">
-                <a href="/collections/vinyl/products/copy-of-apollo-brown-grandeur-2xlp">
-                    <img src="//cdn.shopify.com/s/files/1/0154/0333/products/ApolloBrown_Grandeur_RGBCover_02_1affefb9-0097-4b8d-b16e-9edd2bc20419_large.jpg?v=1437497550" alt="Apollo Brown - Grandeur (2xLP)" />
-                </a>
-            </div> <!-- /.image -->
-            <div class="details">
-                <a href="/collections/vinyl/products/copy-of-apollo-brown-grandeur-2xlp" class="clearfix">
-
-                    <h4 class="title">Apollo Brown - Grandeur (2xLP)</h4>
-
-
-
-                        <span class="price">$22.49</span>
-
-
-
-
-                        <span class="banner sold-out">Sold Out</span>
-
-                </a>
-            </div> <!-- /.details -->
-        </div> <!-- /.product -->
+        <div class="grid__item large--one-quarter medium-down--one-half">
+            <a href="/collections/vinyl/products/mr-lif-dont-look-down-lp" class="grid-link">
+                <span class="grid-link__image grid-link__image--product">
+                    <span class="grid-link__image-centered">
+                        <img src="//cdn.shopify.com/s/files/1/0154/0333/products/MrLif_DontLookDown_Cover_Art_hi-res_e4ceae90-17e2-4d79-a97f-b43555a69712_large.jpg?v=1455203289" alt="Mr. Lif - Don&#39;t Look Down (LP)">
+                    </span>
+                </span>
+                <p class="grid-link__title">Mr. Lif - Don't Look Down (LP)</p>
+                <p class="grid-link__meta">
+                    <strong>$18.99</strong>
+                </p>
+            </a>
+        </div>
         */
 
-        $regex = '<a href="(\/collections\/vinyl\/products\/.*?)".*?>.*?';
+        $regex = '<div class="grid__item.*?(sold-out)?">.*?';
+        $regex .= '<a href="(\/collections\/vinyl\/products\/.*?)".*?>.*?';
         $regex .= '<img src="(.*?)".*?>.*?';
-        $regex .= '<h4 class="title">(.*?)<\/h4>.*?';
-        $regex .= '<span class="price">\$(.*?)<\/span>.*?';
-        $regex .= '(<span class=".*?sold-out">.*?<\/span>.*?)?';
-        $regex .= '<\/a>';
+        $regex .= '<p class="grid-link__title">(.*?)<\/p>.*?';
+        $regex .= '<p class="grid-link__meta">.*?\$(\d{1,}\.\d{2}).*?<\/p>.*?';
+        $regex .= '<\/a>.*?<\/div>';
         preg_match_all('/' . $regex . '/ism', $html, $m);
 
         foreach ($m[0] as $k => $val) {
-            $url     = 'http://www.mellomusicgroup.com' . $m[1][$k];
-            $image   = 'http:' . $m[2][$k];
-            $title   = $m[3][$k];
-            $price   = str_replace('$', '', $m[4][$k]);
-            $soldOut = !empty($m[5][$k]) ? true : false;
+            $url     = 'http://www.mellomusicgroup.com' . $m[2][$k];
+            $image   = 'http:' . $m[3][$k];
+            $title   = $m[4][$k];
+            $price   = $m[5][$k];
+            $soldOut = !empty($m[1][$k]) ? true : false;
             $hash    = md5($url);
 
             if (array_key_exists($hash, $this->foundReleases) === false) {
