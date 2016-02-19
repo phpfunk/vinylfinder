@@ -41,6 +41,7 @@ The logic is the same as for MelloMusicGroup above. To configure bandcamp, just 
 * Run `composer install`
 * $ `php index.php`
 * $ `php mellomusicgroup.php` -- If you want to keep track of MMG inventory
+* $ `php bandcamp.php` -- If you want to keep track of Bandcamp artist inventory
 
 ### My Setup
 I have this running for myself on Google's Computer Engine (Micro Instance). It is set up as a cron to run twice a day. I also have a cron set up that once every 10 days it removes all the `Ebay-*.cache` files and starts fresh.
