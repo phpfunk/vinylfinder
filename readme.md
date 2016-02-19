@@ -18,6 +18,8 @@ Generic name, naming things is hard. Anyway, this small package will get your Di
 * `FROM_ADDRESS`: I am sure you know what this is for
 * `EMAIL_SUBJECT`: The subject of the email that is sent
 * `MMG_SUBJECT`: The subject for the email if checking MelloMusicGroup inventory
+* `BANDCAMP_SUBJECT`: The subject for the email if checking Bandcamp inventory
+* `BANDCAMP_SUBDOMAINS`: Array of subdomains to check on bandcamp
 * `SENDGRID_KEY`: Your sendgrid API Key
 * `DEBUG`: If set to `true` the script will only run for 10% of your wantlist
 
