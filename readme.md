@@ -28,6 +28,11 @@ After that it will keep track of the prices and inventory, then each time it is 
 
 If a new release is posted it will also email you that. If you want to run this script just set up a new cron to run the script once a day. Follow the `How to Run` section below.
 
+### Bandcamp
+As of `2015-02-19`, I added support to keep track of Vinyl inventory on Bandcamp per artist. On first run you will get an email of all vinyl release, their price and if they are in stock or not.
+
+The logic is the same as for MelloMusicGroup above. To configure bandcamp, just place the subdomain for the artist (IE: `j-zone`) in the array provided in the config sample. You can then just run `php bandcamp.php` and the script will do the rest.
+
 
 ### How to Run
 * Update your `config.php` file
