@@ -4,6 +4,8 @@ namespace VinylFinder;
 class MelloMusicGroup extends \VinylFinder\Base {
 
     private $foundReleases = [];
+    private $maxPages      = 10;
+
     public  $releases      = [];
     public  $message       = null;
 
@@ -22,7 +24,7 @@ class MelloMusicGroup extends \VinylFinder\Base {
             // else increase page, find the releases
             $page += 1;
             $this->findReleases($html);
-        } while (true === true);
+        } while ($page < $this->maxPages);
 
         $this->cacheKey = 'MelloMusicGroupVinyl';
         $this->ttl      = 0;
