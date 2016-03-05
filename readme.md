@@ -49,4 +49,4 @@ I have this running for myself on Google's Computer Engine (Micro Instance). It 
 If will work locally as well. I decided for Compute Engine to make sure the cron fires since sometimes my computer is off.
 
 ### PHP Version
-I have tested on `5.5.27` and `7.0.2`.
+I have tested on `5.5.*` and `7.0.*`.

@@ -4,7 +4,6 @@ namespace VinylFinder;
 class MelloMusicGroup extends \VinylFinder\Base {
 
     private $foundReleases = [];
-    private $maxPages      = 10;
 
     public  $releases      = [];
     public  $message       = null;
@@ -12,19 +11,36 @@ class MelloMusicGroup extends \VinylFinder\Base {
     public function getReleases() {
         $page = 1;
         do {
+            /**
+             * Get total releases now
+             * Print a log, extract HTML
+             * Find releases in the HTML
+             * Find new number of releases
+             **/
+            $currentReleases = count($this->foundReleases);
             parent::printLog('  - Extracting page #' . $page);
             $html = $this->runTheJewels('http://www.mellomusicgroup.com/collections/vinyl?page=' . $page);
+            $this->findReleases($html);
+            $totalReleases = count($this->foundReleases);
 
-            // If no more releases, break out
-            if (stristr($html, 'no products in this collection') !== false) {
+            // If current vs. total are same break the loop
+            if ($totalReleases === $currentReleases) {
+
                 parent::printLog('   - No releases found on this page, exiting loop');
+
+                // If on page one, there may be an error
+                if ($page === 1) {
+                    $this->message = 'No releases found, possible error.';
+                    $this->sendEmail('Mello Music Group Error');
+                }
+
                 break;
             }
 
             // else increase page, find the releases
             $page += 1;
-            $this->findReleases($html);
-        } while ($page < $this->maxPages);
+
+        } while ($currentReleases !== $totalReleases);
 
         $this->cacheKey = 'MelloMusicGroupVinyl';
         $this->ttl      = 0;
@@ -116,6 +132,11 @@ class MelloMusicGroup extends \VinylFinder\Base {
         $regex .= '<p class="grid-link__meta">.*?\$(\d{1,}\.\d{2}).*?<\/p>.*?';
         $regex .= '<\/a>.*?<\/div>';
         preg_match_all('/' . $regex . '/ism', $html, $m);
+
+        // If no title, not releases
+        if (!isset($m[4][0])) {
+
+        }
 
         foreach ($m[0] as $k => $val) {
             $url     = 'http://www.mellomusicgroup.com' . $m[2][$k];
