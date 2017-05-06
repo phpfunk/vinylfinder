@@ -19,7 +19,7 @@ class MelloMusicGroup extends \VinylFinder\Base {
              **/
             $currentReleases = count($this->foundReleases);
             parent::printLog('  - Extracting page #' . $page);
-            $html = $this->runTheJewels('http://www.mellomusicgroup.com/collections/vinyl?page=' . $page);
+            $html = $this->runTheJewels('https://www.mellomusicgroup.com/collections/vinyl?page=' . $page);
             $this->findReleases($html);
             $totalReleases = count($this->foundReleases);
 
