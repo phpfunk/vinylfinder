@@ -20,8 +20,15 @@ Generic name, naming things is hard. Anyway, this small package will get your Di
 * `MMG_SUBJECT`: The subject for the email if checking MelloMusicGroup inventory
 * `BANDCAMP_SUBJECT`: The subject for the email if checking Bandcamp inventory
 * `BANDCAMP_SUBDOMAINS`: Array of subdomains to check on bandcamp
+* `FATBEATS_SUBJECT`: The subject for the email if checking Fatbeats inventory
+* `FATBEATS_LABELS`: Array of labels to check inventory for
 * `SENDGRID_KEY`: Your sendgrid API Key
 * `DEBUG`: If set to `true` the script will only run for 10% of your wantlist
+
+### FatBeats
+As of `2020-07-01`, I added support to keep track of Vinyl inventory on FatBeats for labels. It will only work with label collections. On first run you will get an email of all vinyl release, their price and if they are in stock or not.
+
+Follow the `How to Run` section below.
 
 ### MelloMusicGroup
 As of `2015-02-07`, I added support to keep track of Vinyl inventory on MelloMusicGroup. On first run you will get an email of all vinyl release, their price and if they are in stock or not.
@@ -42,6 +49,7 @@ The logic is the same as for MelloMusicGroup above. To configure bandcamp, just 
 * $ `php index.php`
 * $ `php mellomusicgroup.php` -- If you want to keep track of MMG inventory
 * $ `php bandcamp.php` -- If you want to keep track of Bandcamp artist inventory
+* $ `php fatbeats.php` -- If you want to keep track of Fatbeats Label inventory
 
 ### My Setup
 I have this running for myself on Google's Computer Engine (Micro Instance). It is set up as a cron to run twice a day. I also have a cron set up that once every 10 days it removes all the `Ebay-*.cache` files and starts fresh.
