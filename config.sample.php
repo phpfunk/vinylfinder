@@ -22,5 +22,11 @@ define('BANDCAMP_SUBDOMAINS', json_encode(array(
     'j-zone'
 )), true);
 
+// Fatbeats
+define('FATBEATS_SUBJECT', 'Fatbeats Updates', true);
+define('FATBEATS_LABELS', json_encode(array(
+    'big-crown-records'
+)), true);
+
 // Debug
 define('DEBUG', true, true);

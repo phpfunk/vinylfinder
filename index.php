@@ -38,6 +38,9 @@ if (DEBUG === true) {
     unset($new);
 }
 
+\VinylFinder\Base::printLog(' - Starting to search the discogs marketplace');
+$discogs->searchMarketplace($wantList);
+
 \VinylFinder\Base::printLog(' - Starting to search ebay for your wantlist');
 
 // Ebay it

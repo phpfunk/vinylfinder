@@ -30,6 +30,77 @@ class Discogs extends \VinylFinder\Base {
 
     }
 
+    public function searchMarketplace($wantList = array()) {
+
+        foreach ($wantList as $key => $listing) {
+
+            // Check if the listings array is set yet, if not, set it
+            if (!isset($wantList[$key]['listings'])) {
+                $wantList[$key]['listings'] = array();
+            }
+
+            $this->cacheKey = 'Discogs_Marketplace_' . $listing['releaseId'];
+            $this->ttl = 28800; // 8 hours
+
+            parent::printLog('  - fetching ' . $listing['releaseId'] . ' from discogs marketplace');
+
+            $result = $this->getCache();
+            if ($this->isCacheExpired() === true || $result === false) {
+                $result = $this->getMarketplaceListingsByReleaseId($listing['releaseId']);
+
+                // If too many requests, take a break
+                if ($this->status == 429) {
+                    parent::printLog("   - too many requests to the discogs marketplace, take a break");
+                    break;
+                }
+
+                // Only save cache if there is a result
+                if (!empty($result)) {
+                    $this->setCache($result);
+                }
+
+                // Take a break so you don't get rate limited
+                sleep(1);
+            }
+
+            // How many is found
+            parent::printLog('   - (' . count($result) . ') listings found');
+
+            // set the listings to the wantlist item
+            $wantList[$key]['listings'] = $result;
+
+        }
+
+        // Send email
+    }
+
+    public function getMarketplaceListingsByReleaseId($releaseId) {
+        $result = $this->runTheJewels('https://www.discogs.com/sell/mplistrss?release_id=' . $releaseId);
+        $result = json_decode(json_encode(simplexml_load_string($result)));
+
+        if (!isset($result->entry) || empty($result->entry)) {
+            return [];
+        }
+
+        $listings = [];
+        $x = 0;
+        foreach ($result->entry as $listing) {
+            $listings[$x] = [];
+            $listings[$x]['url'] = $listing->id;
+            $listings[$x]['last_updated'] = $listing->updated;
+            $summary = explode(' - ', $listing->summary);
+            $price   = explode(' ', $summary[0]);
+            $listings[$x]['currency'] = $price[0];
+            $listings[$x]['price'] = $price[1];
+            $listings[$x]['seller'] = $summary[1];
+            $listings[$x]['seller_rating'] = 'https://www.discogs.com/sell/seller_feedback/' . $summary[1];
+            $listings[$x]['notes'] = $summary[2];
+            $x++;
+        }
+
+        return $listings;
+    }
+
     public function getByReleaseId($releaseId) {
         $res = $this->search('releases/' . $releaseId);
         print_r($res);
@@ -104,6 +175,7 @@ class Discogs extends \VinylFinder\Base {
             $wants[$key]['title']       = $title;
             $wants[$key]['is45']        = $record['is45'];
             $wants[$key]['thumb']       = $record['thumb'];
+            $wants[$key]['releaseId']   = $record['release_id'];
             $wants[$key]['emailTitle']  = $artist . ' - ' . $title . $is45;
 
             // If there is a \s/\s, search both titles
