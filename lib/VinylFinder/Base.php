@@ -6,6 +6,7 @@ class Base {
     public $info;
     public $error;
     public $status;
+    public $message  = null;
 
     public $cacheKey = null;
     public $ttl      = 86400;

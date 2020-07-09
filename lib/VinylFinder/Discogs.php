@@ -4,7 +4,9 @@ namespace VinylFinder;
 class Discogs extends \VinylFinder\Base {
 
     public $personalToken;
-    private $wants = array();
+
+    private $wants               = [];
+    private $marketplaceListings = [];
 
     public function __construct($personalToken) {
         parent::__construct();
@@ -30,7 +32,7 @@ class Discogs extends \VinylFinder\Base {
 
     }
 
-    public function searchMarketplace($wantList = array()) {
+    public function searchMarketplace($wantList = []) {
 
         foreach ($wantList as $key => $listing) {
 
@@ -47,6 +49,8 @@ class Discogs extends \VinylFinder\Base {
             $result = $this->getCache();
             if ($this->isCacheExpired() === true || $result === false) {
                 $result = $this->getMarketplaceListingsByReleaseId($listing['releaseId']);
+
+                //print_r($result);
 
                 // If too many requests, take a break
                 if ($this->status == 429) {
@@ -68,11 +72,46 @@ class Discogs extends \VinylFinder\Base {
 
             // set the listings to the wantlist item
             $wantList[$key]['listings'] = $result;
-
+            $this->marketplaceListings[$key] = $wantList[$key];
         }
 
-        // Send email
+        $this->setEmail();
+        $this->sendEmail(DISCOGS_MARKETPLACE_SUBJECT);
+
     }
+
+    private function setEmail() {
+
+      parent::printLog(' - Formatting email');
+
+      if (empty($this->marketplaceListings)) {
+          return;
+      }
+
+      // Loop thru the listings and get the email ready
+      foreach ($this->marketplaceListings as $info) {
+          $listings = isset($info['listings']) ? $info['listings'] : array();
+          $total    = count($listings);
+
+          if ($total > 0) {
+              $this->message .= '<img src="' . $info['thumb'] . '" style="display:inline;float:left;margin-right: 5px;margin-bottom:10px;margin-top:50px;" />';
+              $this->message .= '<h2 style="margin-top: 60px;"><a href="' . $info['discogs_url'] . '">' . $info['emailTitle'] . '</a> (' . $total . ')</h2>';
+              $this->message .= '<table style="width:100%;border: 1px solid black;border-collapse: collapse;"><tr>';
+              $this->message .= '<th style="border: 1px solid black;border-collapse: collapse;padding: 5px;text-align: left;">Seller</th>';
+              $this->message .= '<th style="border: 1px solid black;border-collapse: collapse;padding: 5px;text-align: left;">Price (Currency)</th>';
+              $this->message .= '<th style="border: 1px solid black;border-collapse: collapse;padding: 5px;text-align: left;">Notes</th>';;
+              foreach ($listings as $listing) {
+                  $this->message .= '<tr>';
+                  $this->message .= '<td style="border: 1px solid black;border-collapse: collapse;padding: 5px;text-align: left;"><a href="' .  $listing['seller_rating'] . '" target="_blank">' . $listing['seller'] . '</a></td>';
+                  $this->message .= '<td style="border: 1px solid black;border-collapse: collapse;padding: 5px;text-align: left;"><a href="' . $listing['url'] . '" target="_blank">$' . $listing['price'] . '</a> ('. $listing['currency'] . ')</td>';
+                  $this->message .= '<td style="border: 1px solid black;border-collapse: collapse;padding: 5px;text-align: left;">' . $listing['notes'] . '</td>';
+                  $this->message .= '</tr>';
+              }
+              $this->message .= '</table>';
+          }
+      }
+
+   }
 
     public function getMarketplaceListingsByReleaseId($releaseId) {
         $result = $this->runTheJewels('https://www.discogs.com/sell/mplistrss?release_id=' . $releaseId);

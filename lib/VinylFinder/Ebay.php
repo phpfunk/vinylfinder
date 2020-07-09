@@ -7,7 +7,6 @@ class Ebay extends \VinylFinder\Base {
     private $wantList = array();
 
     public  $categoryId = '176985'; // Records
-    public  $message    = null;
 
     public function __construct($appId) {
       parent::__construct();
