@@ -110,41 +110,76 @@ class MelloMusicGroup extends \VinylFinder\Base {
     private function findReleases($html) {
 
         /*
-        <div class="grid__item large--one-quarter medium-down--one-half">
-            <a href="/collections/vinyl/products/mr-lif-dont-look-down-lp" class="grid-link">
-                <span class="grid-link__image grid-link__image--product">
-                    <span class="grid-link__image-centered">
-                        <img src="//cdn.shopify.com/s/files/1/0154/0333/products/MrLif_DontLookDown_Cover_Art_hi-res_e4ceae90-17e2-4d79-a97f-b43555a69712_large.jpg?v=1455203289" alt="Mr. Lif - Don&#39;t Look Down (LP)">
-                    </span>
-                </span>
-                <p class="grid-link__title">Mr. Lif - Don't Look Down (LP)</p>
-                <p class="grid-link__meta">
-                    <strong>$18.99</strong>
-                </p>
-            </a>
+        <figure class="product-grid-item--center">
+    <a id="ProductGridImageWrapper-collection-template-7321125-4784135045209" href="/collections/vinyl/products/open-mike-eagle-brick-body-kids-still-daydream-b-lp" class="product_card"><div class="product_card__image-wrapper" data-bgset="//cdn.shopify.com/s/files/1/0154/0333/products/Pirates_Press_Open_Mike_Eagle_Math_was_Invented_in_the_Projects_3600x3600_RGB_2043558d-8903-4ac6-87e5-66994570091a_180x.jpg?v=1612203919 180w 180h,//cdn.shopify.com/s/files/1/0154/0333/products/Pirates_Press_Open_Mike_Eagle_Math_was_Invented_in_the_Projects_3600x3600_RGB_2043558d-8903-4ac6-87e5-66994570091a_295x.jpg?v=1612203919 295w 295h,//cdn.shopify.com/s/files/1/0154/0333/products/Pirates_Press_Open_Mike_Eagle_Math_was_Invented_in_the_Projects_3600x3600_RGB_2043558d-8903-4ac6-87e5-66994570091a_394x.jpg?v=1612203919 394w 394h,//cdn.shopify.com/s/files/1/0154/0333/products/Pirates_Press_Open_Mike_Eagle_Math_was_Invented_in_the_Projects_3600x3600_RGB_2043558d-8903-4ac6-87e5-66994570091a_590x.jpg?v=1612203919 590w 590h,//cdn.shopify.com/s/files/1/0154/0333/products/Pirates_Press_Open_Mike_Eagle_Math_was_Invented_in_the_Projects_3600x3600_RGB_2043558d-8903-4ac6-87e5-66994570091a_788x.jpg?v=1612203919 788w 788h,//cdn.shopify.com/s/files/1/0154/0333/products/Pirates_Press_Open_Mike_Eagle_Math_was_Invented_in_the_Projects_3600x3600_RGB_2043558d-8903-4ac6-87e5-66994570091a_900x.jpg?v=1612203919 900w 900h,//cdn.shopify.com/s/files/1/0154/0333/products/Pirates_Press_Open_Mike_Eagle_Math_was_Invented_in_the_Projects_3600x3600_RGB_2043558d-8903-4ac6-87e5-66994570091a_1180x.jpg?v=1612203919 1180w 1180h,//cdn.shopify.com/s/files/1/0154/0333/products/Pirates_Press_Open_Mike_Eagle_Math_was_Invented_in_the_Projects_3600x3600_RGB_2043558d-8903-4ac6-87e5-66994570091a_1200x.jpg?v=1612203919 1200w 1200h,//cdn.shopify.com/s/files/1/0154/0333/products/Pirates_Press_Open_Mike_Eagle_Math_was_Invented_in_the_Projects_3600x3600_RGB_2043558d-8903-4ac6-87e5-66994570091a_1500x.jpg?v=1612203919 1500w 1500h,//cdn.shopify.com/s/files/1/0154/0333/products/Pirates_Press_Open_Mike_Eagle_Math_was_Invented_in_the_Projects_3600x3600_RGB_2043558d-8903-4ac6-87e5-66994570091a_1800x.jpg?v=1612203919 1800w 1800h,//cdn.shopify.com/s/files/1/0154/0333/products/Pirates_Press_Open_Mike_Eagle_Math_was_Invented_in_the_Projects_3600x3600_RGB_2043558d-8903-4ac6-87e5-66994570091a_2000x.jpg?v=1612203919 2000w 2000h,//cdn.shopify.com/s/files/1/0154/0333/products/Pirates_Press_Open_Mike_Eagle_Math_was_Invented_in_the_Projects_3600x3600_RGB_2043558d-8903-4ac6-87e5-66994570091a.jpg?v=1612203919 3600w 3600h">
+
+
+        <img id="ProductGridImage-collection-template-7321125-4784135045209" class="product_card__image lazyload "
+          src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+          data-src="//cdn.shopify.com/s/files/1/0154/0333/products/Pirates_Press_Open_Mike_Eagle_Math_was_Invented_in_the_Projects_3600x3600_RGB_2043558d-8903-4ac6-87e5-66994570091a_{width}x.jpg?v=1612203919"
+          data-widths="[295,394,590,700,800,1000,1200,1500,1800,2000,2400,3600]"
+          data-aspectratio="1.0"
+          data-sizes="auto"
+          data-expand="600"
+          data-fallback="//cdn.shopify.com/s/files/1/0154/0333/products/Pirates_Press_Open_Mike_Eagle_Math_was_Invented_in_the_Projects_3600x3600_RGB_2043558d-8903-4ac6-87e5-66994570091a_295x.jpg?v=1612203919"
+          alt="Open Mike Eagle - Brick Body Kids Still Daydream (LP)">
+        <noscript>
+          <img class="product_card__image" src="//cdn.shopify.com/s/files/1/0154/0333/products/Pirates_Press_Open_Mike_Eagle_Math_was_Invented_in_the_Projects_3600x3600_RGB_2043558d-8903-4ac6-87e5-66994570091a_394x.jpg?v=1612203919" alt="Open Mike Eagle - Brick Body Kids Still Daydream (LP)">
+        </noscript><span class="label sold-out label--bottom-right ">Sold Out
+</span></div>
+    </a>
+    <figcaption>
+      <div class="product-title">
+        <a href="/collections/vinyl/products/open-mike-eagle-brick-body-kids-still-daydream-b-lp" class="title">Open Mike Eagle - Brick Body Kids Still Daydream (LP)</a>
+
+      </div>
+
+      <span class="price
+
+         price--sold-out
+        ">
+
+
+          <span class="money">$21.99</span>
+
+
+        <div class="price__unit">
+          <dt>
+            <span class="visually-hidden">Unit price</span>
+          </dt>
+          <dd class="price-unit-price"><span data-unit-price></span><span aria-hidden="true">/</span><span class="visually-hidden">per&nbsp;</span><span data-unit-price-base-unit></span></dd>
         </div>
+      </span>
+
+    </figcaption></figure>
         */
 
-        $regex = '<div class="grid__item.*?(sold-out)?">.*?';
-        $regex .= '<a href="(\/collections\/vinyl\/products\/.*?)".*?>.*?';
-        $regex .= '<img src="(.*?)".*?>.*?';
-        $regex .= '<p class="grid-link__title">(.*?)<\/p>.*?';
-        $regex .= '<p class="grid-link__meta">.*?\$(\d{1,}\.\d{2}).*?<\/p>.*?';
-        $regex .= '<\/a>.*?<\/div>';
+        $regex = '<div class="box product">.*?<figure.*?>.*?';
+        $regex .= '<img class="product_card__image" src="(.*?)".*?>.*?';
+        $regex .= '<div class="product-title">.*?<a href="(\/collections\/vinyl\/products\/.*?)" class="title">(.*?)<\/a>.*?<\/div>.*?';
+        $regex .= '<span class="(price.*?)">.*?';
+        $regex .= '<span class="money">\$(\d{1,}\.\d{2}).*?<\/span>.*?';
+        $regex .= '<\/figure>.*?<\/div>';
+
         preg_match_all('/' . $regex . '/ism', $html, $m);
 
         // If no title, not releases
-        if (!isset($m[4][0])) {
+        if (!isset($m[3][0])) {
 
         }
 
         foreach ($m[0] as $k => $val) {
-            $url     = 'http://www.mellomusicgroup.com' . $m[2][$k];
-            $image   = 'http:' . $m[3][$k];
-            $title   = $m[4][$k];
-            $price   = $m[5][$k];
-            $soldOut = !empty($m[1][$k]) ? true : false;
+            $url     = 'https://www.mellomusicgroup.com' . $m[2][$k];
             $hash    = md5($url);
+            $image   = 'https:' . $m[1][$k];
+            $title   = $m[3][$k];
+            $price   = $m[5][$k];
+            $soldOut = true;
+
+            // if string is not found, it's NOT sold out
+            if (stristr($m[4][$k], 'sold-out') === false) {
+              $soldOut = false;
+            }
 
             if (array_key_exists($hash, $this->foundReleases) === false) {
                 $this->foundReleases[md5($url)] = array(
