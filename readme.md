@@ -14,6 +14,7 @@ Generic name, naming things is hard. Anyway, this small package will get your Di
 * `EBAY_APPID`: Your Ebay API Key
 * `DISCOGS_PERSONAL_TOKEN`: Your personal discogs token
 * `DISCOGS_USERNAME`: Yep, you guessed it, your discogs username
+* `COUNTRY_CODE`: Set the two character country code if you want Ebay results to be targeted to a specific country
 * `TO_ADDRESS`: the email in which to send the results
 * `FROM_ADDRESS`: I am sure you know what this is for
 * `EMAIL_SUBJECT`: The subject of the email that is sent

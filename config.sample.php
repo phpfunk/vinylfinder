@@ -6,7 +6,9 @@ define('DISCOGS_USERNAME', '');
 define('EMAIL_SUBJECT', 'Discogs Wantlist on Ebay');
 
 //Location Based
-define('COUNTRY_CODE', 'US');
+// sample
+//define('COUNTRY_CODE', 'US');
+define('COUNTRY_CODE', null);
 
 // Sendgrid
 define('SENDGRID_KEY', '');
