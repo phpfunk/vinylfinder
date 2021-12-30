@@ -4,14 +4,16 @@ namespace VinylFinder;
 class Ebay extends \VinylFinder\Base {
 
     private $appId;
+    private $countryCode;
     private $wantList = array();
 
     public  $categoryId = '176985'; // Records
     public  $message    = null;
 
-    public function __construct($appId) {
+    public function __construct($appId, $countryCode = null) {
       parent::__construct();
       $this->appId  = $appId;
+      $this->countryCode = $countryCode;
     }
 
     public function getListings($wantList = array()) {
@@ -106,6 +108,14 @@ class Ebay extends \VinylFinder\Base {
 
               if (count($results) >= $returnTotal) {
                   break;
+              }
+
+              // Set item country
+              $country = isset($item['country']) ? $item['country'] : null;
+
+              // if country specific, make sure the listing matches the country
+              if (!is_null($this->countryCode) && strtoupper($country) != strtoupper($this->countryCode)) {
+                continue;
               }
 
               $shipping = 0;

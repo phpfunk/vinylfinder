@@ -44,5 +44,5 @@ if (DEBUG === true) {
 \VinylFinder\Base::printLog(' - Starting to search ebay for your wantlist');
 
 // Ebay it
-$ebay = new \VinylFinder\Ebay(EBAY_APPID);
+$ebay = new \VinylFinder\Ebay(EBAY_APPID, COUNTRY_CODE);
 $ebay->getListings($wantList);
