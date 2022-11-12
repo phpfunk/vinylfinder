@@ -106,6 +106,12 @@ class Discogs extends \VinylFinder\Base {
         print_r($res);
     }
 
+    public function getRandomRelease($username) {
+      $wantlist = $this->getWantlist($username);
+      $itemKey  = array_rand($wantlist);
+      return $wantlist[$itemKey];
+    }
+
     public function getWantlist($username) {
         $this->cacheKey = 'Discogs_WantList_' . md5($username);
 
@@ -138,8 +144,9 @@ class Discogs extends \VinylFinder\Base {
             for ($page = 2; $page <= $pages; $page++) {
 
                 $this->theFormat(
-                    $this->search('users/' . $username . '/wants',
-                        array('page' => $page)
+                    $this->search(
+                      'users/' . $username . '/wants',
+                      array('page' => $page)
                     )
                 );
             }
