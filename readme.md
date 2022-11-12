@@ -51,6 +51,7 @@ The logic is the same as for MelloMusicGroup above. To configure bandcamp, just 
 * $ `php mellomusicgroup.php` -- If you want to keep track of MMG inventory
 * $ `php bandcamp.php` -- If you want to keep track of Bandcamp artist inventory
 * $ `php fatbeats.php` -- If you want to keep track of Fatbeats Label inventory
+* $ `php get-random-release.php` -- If you want a random Discogs wantlist item returned to so you can purchase it
 
 ### My Setup
 I have this running for myself on Google's Computer Engine (Micro Instance). It is set up as a cron to run twice a day. I also have a cron set up that once every 10 days it removes all the `Ebay-*.cache` files and starts fresh.
